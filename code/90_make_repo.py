@@ -67,6 +67,7 @@ explore/
 # 보고서 산출물(PDF·쪽 이미지)은 제출본으로 따로 관리
 report/*.pdf
 report/*.html
+!report/template.html
 report/pages/
 # 파이썬
 __pycache__/

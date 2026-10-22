@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>[[TITLE_TAG]]</title>
+<!-- 공통 논문 양식: 교통공모전_2026/공통_논문양식/paper.css (글꼴은 그 옆 fonts/ 에서 로컬 참조, 외부 링크 없음) -->
+<link rel="stylesheet" href="[[CSS]]">
+<style>
+  :root { --accent: [[ACCENT]]; }
+  /* 머리글(Chrome 이 @page 여백 상자를 지원할 때만 표시). 1쪽 생략과 쪽번호는 paper.css 가 선언. */
+  @page { @top-left { content: "[[RUNNING_TITLE]]"; font-family: 'Pretendard', 'Malgun Gothic', sans-serif; font-size: 8pt; color: #777; }
+          @top-right { content: "{{팀명}}"; font-family: 'Pretendard', 'Malgun Gothic', sans-serif; font-size: 8pt; color: #777; } }
+  @page :first { @top-left { content: none; } @top-right { content: none; } }  /* 1쪽 머리글 생략(위 선언보다 뒤에 두어야 적용) */
+  /* ⑤ 보고서 그림 크기 (슬롯은 50_build_report.py 인자) */
+  /* 그림은 가로세로비를 지킨다(width:100%와 max-height를 함께 주면 늘어남). 상자 안에서 가로·세로 중 먼저 닿는 쪽에 맞춘다. */
+  figure.wide img { max-height: [[FIG_WIDE_H]]mm; max-width: 100%; width: auto; height: auto; }   /* 전체 폭 두 패널 그림 */
+  figure.map img  { max-height: [[FIG_MAP_H]]mm; max-width: 100%; width: auto; height: auto; }    /* 지도 포함 그림 */
+  figure.flow img { max-height: [[FIG_FLOW_H]]mm; max-width: 100%; width: auto; height: auto; }   /* 흐름도 */
+  figure.half { width: 50%; margin-left: auto; margin-right: auto; }
+  figure.half img { max-height: [[FIG_HALF_H]]mm; max-width: 100%; width: auto; height: auto; }
+  figure.tall img { max-height: 200mm; width: auto; }             /* 부록 큰 지도 */
+  figure.mid img { max-height: 100mm; width: auto; }              /* 부록 지도(그림 B) */
+  .tblock { page-break-inside: avoid; }
+  figure { margin: 4pt 0 4pt 0; }   /* 그림 위아래 여백을 공통 CSS(6pt)보다 조금 줄임 */
+  .appendix { page-break-before: auto; margin-top: 16pt; }   /* 주 뒤 빈 쪽을 없애려고 부록 앞 강제 쪽나눔을 끈다(공통 CSS는 그대로) */
+  table.three td { text-align: left; text-justify: none; }
+  table.three td.num { text-align: right; }
+  table.three td.c { text-align: center; }
+  table.three td.url { text-align: left; word-break: normal; overflow-wrap: anywhere; }   /* URL은 / 뒤(<wbr>)에서 우선 줄바꿈 */
+</style>
+</head>
+<body>
+[[BODY]]
+</body>
+</html>
