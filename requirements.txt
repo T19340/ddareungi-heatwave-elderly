@@ -1,0 +1,9 @@
+# 2026-10-21 실행 환경 (Python 3.14.2, Windows 11). 실제 import 한 패키지만.
+pandas==3.0.1
+numpy==2.4.2
+scipy==1.17.1
+statsmodels==0.14.6
+matplotlib==3.10.8
+openpyxl==3.1.5
+requests==2.32.5
+PyMuPDF==1.27.2.3

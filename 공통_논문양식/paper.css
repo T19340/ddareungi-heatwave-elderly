@@ -1,0 +1,123 @@
+/* ============================================================================
+   paper.css — 공모전 분석보고서 공통 논문 양식 (③ 전기버스 · ④ 폭염 정류장 공용)
+   작성 2026-10-20. 근거: 교통공모전_2026/논문양식_지침.md + 시인성_시각화_지침.md B절
+   변경 이력:
+     v2 2026-10-20 (④) 본문 10pt·줄간격 1.5, 여백 20/19mm, 절 제목 여백 14/5pt·소절 10/4pt, 그림 최대 높이 75mm(.tall 90mm), 표 .small 8.5pt
+     v3 2026-10-20 (④) 시인성 지침 B절: 본문 단락 word-break: keep-all + text-justify: inter-character(어절 단위 줄바꿈, 글자 사이 간격으로 양쪽 정렬),
+        .nb(줄 끝에서 안 갈라지는 묶음), .figrow(그림 2열 grid, 간격 4mm), orphans/widows 2, 그림·표 뒤 첫 단락 들여쓰기 없음, p.left(벌어진 줄 구제용)
+
+   사용법
+   1) HTML <head>에 <link rel="stylesheet" href="../../공통_논문양식/paper.css"> (report/ 폴더 기준 상대경로).
+      글꼴은 이 파일 옆 fonts/ 에서 로컬로 읽는다(외부 링크 없음). 없으면 Batang·Malgun Gothic 으로 떨어진다.
+   2) 강조색은 HTML 안 <style>에서 :root 변수를 덮어쓴다 (절 번호·표 머리줄·그림 틀 선에만 쓰인다):
+        :root { --accent: #1b5e20; }   /* ③ 전기버스 진녹 */
+        :root { --accent: #b3541e; }   /* ④ 폭염 정류장 진주황 (이 파일의 기본값) */
+   3) 머리글 문구는 보고서마다 다르므로 HTML 안 <style>에 다음 블록을 넣는다(Chrome이 @page 여백 상자를 지원함, 확인됨):
+        @page { @top-left { content: "짧은 제목"; } @top-right { content: "{{팀명}}"; } }
+        @page :first { @top-left { content: none; } @top-right { content: none; } }   /* 1쪽 머리글 생략 — 위 블록 뒤에 둘 것 */
+      쪽번호(@bottom-center)는 이 파일이 선언한다.
+   4) 구조 클래스:
+        .titleblock > h1 / .subtitle / .authors / .meta / .teamline   제목 블록(별도 표지 없음)
+        .abstract (요약, 들여쓴 단락) / .keywords (핵심어)
+        h2 (절 제목: <span class="num">1.</span> 분석 배경 및 목적) / h3 (소절 5.1)
+        p (본문: 첫 줄 1em 들여쓰기, 어절 단위 줄바꿈) / p.noindent / p.left (낱말 사이가 벌어진 단락만 왼쪽 정렬)
+        span.nb (white-space: nowrap — "1,160만 명", "p<0.001", "그림 3", "[1]" 등 숫자·단위·참조 묶음; 빌드 스크립트가 자동 감쌈)
+        p.tcap (표 캡션, 표 위) + table.three (삼선표; .small 8.5pt; .flow 쪽 넘김 허용, thead 반복) + p.tnote (표 아래 주)
+        figure > img + figcaption (그림 캡션, 그림 아래; figure.tall = 세로형 90mm)
+        .figrow > figure × 2 (두 그림 나란히, 캡션은 각자)
+        .eq (가운데 정렬 수식) > .body / .no (오른쪽 번호 (1))
+        sup.fn (미주 번호) / .notes (미주 목록)
+        .refs ol (참고문헌 [n])
+        .appendix (쪽 나눔 후 부록)
+   ============================================================================ */
+
+/* ---------- 글꼴 (로컬 파일) ---------- */
+@font-face { font-family: 'Noto Serif KR'; src: url('fonts/NotoSerifKR-VF.ttf') format('truetype'); font-weight: 200 900; font-style: normal; font-display: block; }
+@font-face { font-family: 'Pretendard'; src: url('fonts/Pretendard-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: 'Pretendard'; src: url('fonts/Pretendard-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
+@font-face { font-family: 'Pretendard'; src: url('fonts/Pretendard-SemiBold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: block; }
+@font-face { font-family: 'Pretendard'; src: url('fonts/Pretendard-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: block; }
+
+:root {
+  --accent: #b3541e;
+  --serif: 'Noto Serif KR', 'Batang', '바탕', serif;
+  --sans: 'Pretendard', 'Malgun Gothic', '맑은 고딕', sans-serif;
+  --gray: #555;
+  --rule: #000;
+}
+
+/* ---------- 쪽 ---------- */
+@page { size: A4; margin: 20mm 19mm; @bottom-center { content: counter(page); font-family: 'Pretendard', 'Malgun Gothic', sans-serif; font-size: 9pt; color: #444; } }
+@page :first { @top-left { content: none; } @top-right { content: none; } }
+html, body { margin: 0; padding: 0; }
+body { font-family: var(--serif); font-size: 10pt; line-height: 1.5; color: #111; text-align: justify; }
+
+/* ---------- 제목 블록 ---------- */
+.titleblock { text-align: center; margin: 0 0 8pt 0; }
+.titleblock h1 { font-family: var(--sans); font-size: 20pt; font-weight: 700; line-height: 1.35; margin: 0 0 6pt 0; word-break: keep-all; }
+.titleblock .subtitle { font-family: var(--sans); font-size: 12pt; font-weight: 500; color: #222; margin: 0 0 8pt 0; line-height: 1.4; word-break: keep-all; }
+.titleblock .authors { font-family: var(--sans); font-size: 11pt; margin: 0 0 3pt 0; }
+.titleblock .meta { font-family: var(--sans); font-size: 9pt; color: var(--gray); margin: 0 0 2pt 0; }
+.titleblock .teamline { font-family: var(--sans); font-size: 8.5pt; color: var(--gray); margin: 0; }
+
+/* ---------- 요약·핵심어 ---------- */
+.abstract { margin: 8pt 2em 3pt 2em; font-size: 9pt; line-height: 1.55; text-align: justify; text-justify: inter-character; word-break: keep-all; overflow-wrap: normal; hyphens: none; }
+.abstract b { font-family: var(--sans); }
+.keywords { margin: 0 2em 8pt 2em; font-size: 9pt; font-family: var(--sans); color: #222; word-break: keep-all; }
+
+/* ---------- 절·소절·본문 ---------- */
+h2 { font-family: var(--sans); font-size: 13pt; font-weight: 700; margin: 14pt 0 5pt 0; line-height: 1.3; page-break-after: avoid; word-break: keep-all; }
+h2 .num { color: var(--accent); margin-right: 0.3em; }
+h3 { font-family: var(--sans); font-size: 11pt; font-weight: 700; margin: 10pt 0 4pt 0; page-break-after: avoid; word-break: keep-all; }
+p { margin: 0; text-indent: 1em; text-align: justify; text-justify: inter-character; word-break: keep-all; overflow-wrap: normal; hyphens: none; orphans: 2; widows: 2; }
+p.left { text-align: left; }   /* 낱말 사이가 벌어진 줄이 남는 단락만 */
+p.noindent, .abstract, .keywords, p.tcap, p.tnote, figcaption, .notes p, .refs p { text-indent: 0; }
+figure + p, .figrow + p, table + p, p.tnote + p, p.tcap + p, .eq + p, div.eq + p { text-indent: 0; }   /* 그림·표·수식 뒤 첫 단락 */
+.nb { white-space: nowrap; }
+ul, ol { margin: 2pt 0 4pt 0; padding-left: 1.8em; }
+li { margin: 0; word-break: keep-all; }
+sup.fn { font-family: var(--sans); font-size: 7.5pt; vertical-align: super; line-height: 0; }
+.cite { font-family: var(--sans); font-size: 9.5pt; }
+
+/* ---------- 표 (삼선표) ---------- */
+p.tcap { font-family: var(--sans); font-size: 9.5pt; font-weight: 700; margin: 8pt 0 2pt 0; page-break-after: avoid; word-break: keep-all; }
+table.three { border-collapse: collapse; width: 100%; font-family: var(--sans); font-size: 9pt; line-height: 1.35;
+              border-top: 1.2pt solid var(--rule); border-bottom: 1.2pt solid var(--rule); margin: 0 0 2pt 0; page-break-inside: avoid; }
+table.three.flow { page-break-inside: auto; }
+table.three.flow tr { page-break-inside: avoid; }
+table.three thead { display: table-header-group; }
+table.three th { border-bottom: 0.5pt solid var(--accent); font-weight: 600; padding: 2.5pt 4pt; text-align: center; vertical-align: bottom; background: none; }
+table.three td { padding: 2pt 4pt; vertical-align: top; border: none; }
+table.three td.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+table.three td.c { text-align: center; white-space: nowrap; }
+table.three.small { font-size: 8.5pt; line-height: 1.3; }
+table.three.small th, table.three.small td { padding: 2pt 3pt; }
+table.three td.url { word-break: break-all; overflow-wrap: anywhere; font-size: 7.8pt; }
+p.tnote { font-family: var(--sans); font-size: 8.5pt; color: #333; line-height: 1.4; margin: 0 0 6pt 0; word-break: keep-all; }
+
+/* ---------- 그림 ---------- */
+figure { margin: 6pt 0 6pt 0; padding: 4pt 0 0 0; border-top: 0.6pt solid var(--accent); text-align: center; page-break-inside: avoid; }
+figure img { max-width: 100%; max-height: 75mm; width: auto; height: auto; }
+figure.tall img { max-height: 90mm; }
+figcaption { font-family: var(--sans); font-size: 9pt; line-height: 1.4; text-align: justify; margin-top: 3pt; color: #111; word-break: keep-all; }
+figcaption b { font-weight: 700; }
+.figrow { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; align-items: start; margin: 6pt 0 6pt 0; page-break-inside: avoid; }
+.figrow figure { margin: 0; }
+.figrow figure img { max-height: 75mm; width: 100%; }
+
+/* ---------- 수식 ---------- */
+.eq { position: relative; text-align: center; margin: 5pt 0 5pt 0; font-size: 10pt; page-break-inside: avoid; }
+.eq .no { position: absolute; right: 0; top: 0; }
+
+/* ---------- 미주·참고문헌 ---------- */
+.notes { font-size: 8.5pt; line-height: 1.45; border-top: 0.5pt solid #999; margin: 10pt 0 0 0; padding-top: 4pt; }
+.notes p { margin: 0; padding-left: 1.6em; text-indent: -1.6em; text-align: left; }
+.refs ol { list-style: none; padding-left: 2.2em; margin: 2pt 0 0 0; }
+.refs li { font-size: 9pt; line-height: 1.45; text-indent: -2.2em; margin: 0 0 1pt 0; word-break: break-all; }
+.refs li .lab { display: inline-block; width: 2.2em; text-indent: 0; font-family: var(--sans); }
+.tools { font-size: 9.5pt; }
+
+/* ---------- 부록 ---------- */
+.appendix { page-break-before: always; }
+.small { font-size: 9pt; }
+.gray { color: var(--gray); }

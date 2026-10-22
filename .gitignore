@@ -1,0 +1,19 @@
+# 원본 데이터는 저장소에 넣지 않는다 (code/00_download.py, 01_weather.py 로 다시 받는다)
+data_raw/*
+!data_raw/SOURCES.md
+data_proc/
+explore/
+# 보고서 산출물(PDF·쪽 이미지)은 제출본으로 따로 관리
+report/*.pdf
+report/*.html
+report/pages/
+# 파이썬
+__pycache__/
+*.pyc
+# 키·환경
+.env
+.secrets/
+*.key
+# 임시
+*.tmp
+~$*
