@@ -33,7 +33,7 @@ from matplotlib.patches import FancyBboxPatch, Patch  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 PROC, RES, FIG = ROOT / "data_proc", ROOT / "results", ROOT / "figures"
 FIG.mkdir(parents=True, exist_ok=True)
-FONT_DIR = ROOT.parent / "공통_논문양식" / "fonts"
+FONT_DIR = ROOT / "공통_논문양식" / "fonts"
 font_name = "Malgun Gothic"
 for f in sorted(glob.glob(str(FONT_DIR / "Pretendard-*.otf"))):
     try:
